@@ -19,7 +19,7 @@ app.get('/', (req, res) => {
  app.post("/shortUrls", shortURL, async (req, res) => {
    let data;
    try {
-      data = await fs.readFile(path.join(__dirname, "..", "/data.json"), "utf-8");
+      data = await fs.readFile(path.join(__dirname, "..", "data.json"), "utf-8");
       data = JSON.parse(data);
       
    } catch (error) {
@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 
     data.push(newUrl);
 
-    await fs.writeFile(path.join(__dirname, "..", "/data.json"), JSON.stringify(data));
+    await fs.writeFile(path.join(__dirname, "..", "data.json"), JSON.stringify(data));
 
     console.log(req.body);
     res.status(200).json(newUrl);
@@ -57,7 +57,7 @@ app.get('/', (req, res) => {
  app.get("/:slug", async (req, res)=>{
    let smallUrl;
    try {
-      smallUrl = await fs.readFile(path.join(__dirname, "..", "/data.json"), "utf-8");
+      smallUrl = await fs.readFile(path.join(__dirname, "..", "data.json"), "utf-8");
       smallUrl = JSON.parse(smallUrl)
    } catch (error) {
       smallUrl = [];
