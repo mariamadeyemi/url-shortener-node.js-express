@@ -7,7 +7,7 @@ const shortURL = require("../middlewares/shortURL.js");
 const app = express();
 
 
-app.use(express.static('public'));
+app.use(express.static(path.resolve('../public')));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 //  app.use("/shortUrls");
