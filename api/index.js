@@ -1,6 +1,5 @@
 const express = require ("express");
 const path = require ("path");
-const fs = require("fs/promises");
 // const { readFile } = require ("fs");
 // const shorturl = require("node-url-shortener");
 const shortURL = require("../middlewares/shortURL.js");
@@ -11,20 +10,13 @@ app.use(express.static(path.join(__dirname,"..",'public')));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 //  app.use("/shortUrls");
-
+let data = []
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname,"..", "pages/index.html"))
  }) 
 
- app.post("/shortUrls", shortURL, async (req, res) => {
-   let data;
-   try {
-      data = await fs.readFile(path.join(__dirname, "..", "data.json"), "utf-8");
-      data = JSON.parse(data);
-      
-   } catch (error) {
-      data = [];
-   }
+ app.post("/shortUrls", shortURL, (req, res) => {
+   
 
     res.shorturl = `${req.protocol}://${req.get('host')}/${res.shortURL}`;
 
@@ -35,8 +27,6 @@ app.get('/', (req, res) => {
     }
 
     data.push(newUrl);
-
-    await fs.writeFile(path.join(__dirname, "..", "data.json"), JSON.stringify(data));
 
     console.log(req.body);
     res.status(200).json(newUrl);
@@ -54,21 +44,14 @@ app.get('/', (req, res) => {
    //  res.redirect('/');
  });
 
- app.get("/:slug", async (req, res)=>{
-   let smallUrl;
-   try {
-      smallUrl = await fs.readFile(path.join(__dirname, "..", "data.json"), "utf-8");
-      smallUrl = JSON.parse(smallUrl)
-   } catch (error) {
-      smallUrl = [];
-   }
-   let getURL = smallUrl.find((link)=>{
+ app.get("/:slug",  (req, res)=>{
+   
+   let getURL = data.find((link)=>{
       return link?.slug === req.params.slug
    });
    if(getURL){
      return res.redirect(getURL.fullUrl);
    }
-   console.log(getURL);
    res.status(404).send();
    //  res.status(200).json(JSON.parse(data));   
  });
