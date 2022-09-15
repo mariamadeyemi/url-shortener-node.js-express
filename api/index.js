@@ -1,10 +1,9 @@
 const express = require ("express");
 const path = require ("path");
-const port = 5000;
 const fs = require("fs/promises");
-const { readFile } = require ("fs");
+// const { readFile } = require ("fs");
 // const shorturl = require("node-url-shortener");
-const shortURL = require("./middlewares/shortURL.js");
+const shortURL = require("../middlewares/shortURL.js");
 const app = express();
 
 
@@ -14,12 +13,18 @@ app.use(express.json());
 //  app.use("/shortUrls");
 
 app.get('/', (req, res) => {
-    res.sendFile(path.resolve("public/index.html"))
+    res.sendFile(path.resolve("../pages/index.html"))
  }) 
 
  app.post("/shortUrls", shortURL, async (req, res) => {
-    let data = await fs.readFile(path.resolve("data.json"), "utf-8");
-    data = JSON.parse(data);
+   let data;
+   try {
+      data = await fs.readFile(path.resolve("../data.json"), "utf-8");
+      data = JSON.parse(data);
+      
+   } catch (error) {
+      data = [];
+   }
 
     res.shorturl = `${req.protocol}://${req.get('host')}/${res.shortURL}`;
 
@@ -31,7 +36,7 @@ app.get('/', (req, res) => {
 
     data.push(newUrl);
 
-    await fs.writeFile(path.resolve("data.json"), JSON.stringify(data));
+    await fs.writeFile(path.resolve("../data.json"), JSON.stringify(data));
 
     console.log(req.body);
     res.status(200).json(newUrl);
@@ -52,7 +57,7 @@ app.get('/', (req, res) => {
  app.get("/:slug", async (req, res)=>{
    let smallUrl;
    try {
-      smallUrl = await fs.readFile("data.json", "utf-8");
+      smallUrl = await fs.readFile(path.resolve("../data.json"), "utf-8");
       smallUrl = JSON.parse(smallUrl)
    } catch (error) {
       smallUrl = [];
@@ -70,11 +75,3 @@ app.get('/', (req, res) => {
 
 
 
-
-
-
-
-
- app.listen(port, () => {
-    console.log(`server is running on http://localhost:${port}`)
-});

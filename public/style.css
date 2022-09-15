@@ -219,7 +219,7 @@ h1{
 .form-container{
    margin: 2em;
     padding: 2em;
-    background-image: url(images/bg-shorten-desktop.svg);
+    background-image: url(/images/bg-shorten-desktop.svg);
     background-repeat: no-repeat;
     background-size: contain;
     background-color: var(--primary-color-dark-violet);
@@ -352,7 +352,7 @@ h1{
 .boost{
     text-align: center;
     padding: 2em;
-    background-image: url(images/bg-boost-desktop.svg);
+    background-image: url(/images/bg-boost-desktop.svg);
     background-repeat: no-repeat;
     background-size: contain;
     background-color: var(--neutral-very-dark-violet);
