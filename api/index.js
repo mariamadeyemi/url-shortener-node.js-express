@@ -7,13 +7,13 @@ const shortURL = require("../middlewares/shortURL.js");
 const app = express();
 
 
-app.use(express.static(path.join(__dirname,'public')));
+app.use(express.static(path.join(__dirname,"..",'public')));
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 //  app.use("/shortUrls");
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, "pages/index.html"))
+    res.sendFile(path.join(__dirname,"..", "pages/index.html"))
  }) 
 
  app.post("/shortUrls", shortURL, async (req, res) => {
